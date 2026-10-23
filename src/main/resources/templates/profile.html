@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Profile')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="main" class="container">
+    <h1>Profile</h1>
+    <dl class="facts">
+        <dt>Name</dt><dd th:text="${user.fullName}">Jane</dd>
+        <dt>Email</dt><dd th:text="${user.email}">jane@example.com</dd>
+        <dt>Auth0 user ID (<code>sub</code>)</dt><dd><code th:text="${user.subject}">auth0|123</code></dd>
+        <dt>Roles</dt><dd th:text="${#lists.isEmpty(roles)} ? 'none' : ${#strings.listJoin(roles, ', ')}">admin</dd>
+        <dt>Authentication methods (<code>amr</code>)</dt>
+        <dd th:text="${#lists.isEmpty(amr)} ? 'none reported' : ${#strings.listJoin(amr, ', ')}">pwd, mfa</dd>
+        <dt>ID token issued at (<code>iat</code>)</dt><dd th:text="${issuedAt}">time</dd>
+    </dl>
+
+    <h2>All ID token claims</h2>
+    <table class="claims">
+        <caption class="visually-hidden">ID token claims</caption>
+        <thead><tr><th scope="col">Claim</th><th scope="col">Value</th></tr></thead>
+        <tbody>
+        <tr th:each="c : ${claims}">
+            <th scope="row"><code th:text="${c.key}">sub</code></th>
+            <td><code th:text="${c.value}">value</code></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

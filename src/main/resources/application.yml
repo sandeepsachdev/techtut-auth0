@@ -1,0 +1,27 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+            client-id: ${AUTH0_CLIENT_ID}
+            client-secret: ${AUTH0_CLIENT_SECRET}
+            scope: openid, profile, email
+        provider:
+          auth0:
+            # The trailing slash matters: it must match the "iss" claim exactly
+            issuer-uri: https://${AUTH0_DOMAIN}/
+      resourceserver:
+        jwt:
+          issuer-uri: https://${AUTH0_DOMAIN}/
+          audiences: ${AUTH0_AUDIENCE:https://techtut-auth0-api}
+
+server:
+  port: ${PORT:8080}
+  # Build https:// redirect URIs when running behind a proxy or load balancer
+  forward-headers-strategy: framework
+
+app:
+  step-up:
+    # How recently the user must have completed MFA to open step-up pages
+    max-age: ${STEP_UP_MAX_AGE:10m}

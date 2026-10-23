@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="main" class="container">
+    <h1>Spring Boot + Auth0 step-up MFA</h1>
+    <p>This demo signs you in with Auth0 using OpenID Connect. Everyday pages need only a normal login.
+        Sensitive pages ask for a second factor if you haven't completed MFA in the last few minutes.</p>
+
+    <div sec:authorize="!isAuthenticated()" class="panel">
+        <p>You're not signed in.</p>
+        <a class="button" th:href="@{/oauth2/authorization/auth0}">Log in with Auth0</a>
+    </div>
+
+    <ul sec:authorize="isAuthenticated()" class="cards">
+        <li class="panel">
+            <h2><a th:href="@{/profile}">Profile</a></h2>
+            <p>Normal login is enough. Shows your ID token claims, including <code>amr</code>.</p>
+        </li>
+        <li class="panel">
+            <h2><a th:href="@{/account/security}">Security settings</a></h2>
+            <p>Step-up protected. Requires MFA within the configured window.</p>
+        </li>
+        <li class="panel">
+            <h2><a th:href="@{/payments}">Payments</a></h2>
+            <p>Also step-up protected.</p>
+        </li>
+        <li class="panel">
+            <h2><a th:href="@{/admin}">Admin</a></h2>
+            <p>Requires the <code>admin</code> role from Auth0 RBAC. Users without it get a 403, not an MFA prompt.</p>
+        </li>
+    </ul>
+</main>
+</body>
+</html>

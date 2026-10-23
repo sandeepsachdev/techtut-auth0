@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Security settings')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main id="main" class="container">
+    <h1>Security settings</h1>
+    <p class="alert success" role="status">
+        Multi-factor authentication verified for <strong th:text="${user.email}">you</strong>.
+        Your current ID token was issued at <span th:text="${issuedAt}">time</span>.
+    </p>
+    <p class="alert" role="status" th:if="${message}" th:text="${message}">Saved</p>
+
+    <form th:action="@{/account/security/recovery-email}" method="post" class="panel form">
+        <h2>Change recovery email</h2>
+        <label for="recoveryEmail">New recovery email</label>
+        <input id="recoveryEmail" name="recoveryEmail" type="email" autocomplete="email" required>
+        <button type="submit" class="button">Save</button>
+        <p class="muted">This POST is step-up protected too. If your MFA window has expired, it returns 403.</p>
+    </form>
+</main>
+</body>
+</html>
